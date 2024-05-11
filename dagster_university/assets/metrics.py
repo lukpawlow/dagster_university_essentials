@@ -56,7 +56,7 @@ def manhattan_map():
         labels={'num_trips': 'Number of Trips'}
     )
     
-    # pio.write_image(fig, constants.MANHATTAN_MAP_FILE_PATH)
+    pio.write_image(fig, constants.MANHATTAN_MAP_FILE_PATH)
 
 
 @asset(
