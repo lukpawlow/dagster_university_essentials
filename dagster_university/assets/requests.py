@@ -1,4 +1,6 @@
-from dagster import Config, asset
+import base64
+
+from dagster import Config, asset, MaterializeResult, MetadataValue
 from dagster_duckdb import DuckDBResource
 
 import plotly.express as px
@@ -15,7 +17,7 @@ class AdhocRequestConfig(Config):
 @asset(
     deps=["taxi_zones", "taxi_trips"]
 )
-def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource):
+def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource) -> MaterializeResult:
     """
       The response to an request made in the `requests` directory.
       See `requests/README.md` for more information.
@@ -70,3 +72,15 @@ def adhoc_request(config: AdhocRequestConfig, database: DuckDBResource):
     )
 
     pio.write_image(fig, file_path)
+
+    with open(file_path, 'rb') as file:
+      image_data = file.read()
+    
+    base64_data = base64.b64encode(image_data).decode('utf-8')
+    md_content = f"![Image](data:image/jpeg;base64,{base64_data})"
+
+    return MaterializeResult(
+      metadata={
+        "preview": MetadataValue.md(md_content)
+    }
+)
