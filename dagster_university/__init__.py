@@ -9,7 +9,9 @@ from .sensors import adhoc_request_sensor
 
 
 trip_assets = load_assets_from_modules([trips])
-metric_assets = load_assets_from_modules([metrics])
+metric_assets = load_assets_from_modules(
+    modules=[metrics],
+    group_name="metrics",)
 request_assets = load_assets_from_modules(
     modules=[requests],
     group_name='requests',

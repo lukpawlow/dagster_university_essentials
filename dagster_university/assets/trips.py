@@ -3,7 +3,7 @@ from dagster_duckdb import DuckDBResource
 import requests
 import pandas as pd
 from . import constants
-from dagster import asset, MaterializeResult, MetadataValue
+from dagster import asset, MaterializeResult, MetadataValue, AssetExecutionContext
 from ..partitions import monthly_partition
 
 
@@ -11,7 +11,7 @@ from ..partitions import monthly_partition
     partitions_def=monthly_partition,
     group_name='raw_files'
 )
-def taxi_trips_file(context) -> MaterializeResult:
+def taxi_trips_file(context: AssetExecutionContext) -> MaterializeResult:
     """
       The raw parquet files for the taxi trips dataset. Sourced from the NYC Open Data portal.
     """

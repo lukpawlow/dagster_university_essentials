@@ -1,7 +1,7 @@
 from dagster import (
     RunRequest,
     SensorResult,
-    sensor,
+    sensor, SensorEvaluationContext
 )
 
 import os
@@ -12,7 +12,7 @@ from ..jobs import adhoc_request_job
 @sensor(
     job=adhoc_request_job
 )
-def adhoc_request_sensor(context):
+def adhoc_request_sensor(context: SensorEvaluationContext):
     PATH_TO_REQUESTS = os.path.join(os.path.dirname(__file__), "../../", "data/requests")
 
     previous_state = json.loads(context.cursor) if context.cursor else {}
